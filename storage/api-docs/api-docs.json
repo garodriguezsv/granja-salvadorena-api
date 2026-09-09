@@ -1,0 +1,865 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Granja Salvadoreña",
+        "description": "API REST para el sistema de E-commerce de Granja Salvadoreña",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Registrar un nuevo usuario",
+                "description": "Registrar un nuevo usuario.",
+                "operationId": "c7bb21a0d87049e161b8e4c9b0d909f2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Gerson Rodriguez"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "gerson@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Iniciar sesión",
+                "description": "Iniciar sesión.",
+                "operationId": "dd51a484b7fa0f97c7680fdbde14cf5f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "gerson@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Inicio de sesión correcto"
+                    },
+                    "401": {
+                        "description": "Credenciales incorrectas"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                }
+            }
+        },
+        "/api/auth/me": {
+            "get": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Obtener usuario autenticado",
+                "description": "Obtener usuario autenticado.",
+                "operationId": "b5de204f5e452ef51327c691aa99e77c",
+                "responses": {
+                    "200": {
+                        "description": "Usuario autenticado obtenido correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autenticación"
+                ],
+                "summary": "Cerrar sesión",
+                "description": "Documentacion",
+                "operationId": "df9bdc6c7a6d9f20b983526b2ec0f698",
+                "responses": {
+                    "200": {
+                        "description": "Sesión cerrada correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Listar categorías",
+                "description": "Listar categorías.",
+                "operationId": "ac9c4d978ea4e5b72915ca9728e5b8b1",
+                "responses": {
+                    "200": {
+                        "description": "Lista de categorías obtenida correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Crear una nueva categoría",
+                "description": "Crear una categoría.",
+                "operationId": "cca49a87d9b0ebb9a98ad7c154b71737",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Bebidas"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bebidas tradicionales de Centroamérica y México."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Categoría creada correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories/{category}": {
+            "get": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Mostrar una categoría específica",
+                "description": "Mostrar una categoría.",
+                "operationId": "ff3ab984d3fe877eb16da6009394d694",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría obtenida correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Actualizar una categoría",
+                "description": "Actualizar una categoría.",
+                "operationId": "3146e96866d62a90bd01a7070fd61470",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Bebidas"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bebidas tradicionales y artesanales de Centroamérica y México."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Categoría actualizada correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categorías"
+                ],
+                "summary": "Eliminar una categoría",
+                "description": "Eliminar una categoría.",
+                "operationId": "88c22abd8149aea4b3bdcb280a0fddf7",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "ID de la categoría",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Categoría eliminada correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Categoría no encontrada"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "summary": "Verificar estado de la API",
+                "operationId": "c873d7f3d9f52c19cd7a1b4bebfe02df",
+                "responses": {
+                    "200": {
+                        "description": "API funcionando correctamente"
+                    }
+                }
+            }
+        },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Órdenes"
+                ],
+                "summary": "Obtener historial de órdenes",
+                "description": "Obtiene las órdenes del usuario autenticado.",
+                "operationId": "955bb77a45ae173a485fadb8befed93f",
+                "responses": {
+                    "200": {
+                        "description": "Órdenes obtenidas correctamente."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Órdenes"
+                ],
+                "summary": "Crear una orden",
+                "description": "Crea una nueva orden para el usuario autenticado.",
+                "operationId": "2123ba58dadb22bd6f2c8081af562230",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "items"
+                                ],
+                                "properties": {
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "product_id",
+                                                "quantity"
+                                            ],
+                                            "properties": {
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "quantity": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Orden creada correctamente."
+                    },
+                    "401": {
+                        "description": "No autenticado."
+                    },
+                    "422": {
+                        "description": "Datos de la orden inválidos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{order}": {
+            "get": {
+                "tags": [
+                    "Órdenes"
+                ],
+                "summary": "Consultar una orden",
+                "description": "Obtiene una orden perteneciente al usuario autenticado.",
+                "operationId": "8114ac185cc1bf301d8862617e497098",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 2
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orden obtenida correctamente."
+                    },
+                    "403": {
+                        "description": "La orden no pertenece al usuario."
+                    },
+                    "404": {
+                        "description": "Orden no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{order}/cancel": {
+            "patch": {
+                "tags": [
+                    "Órdenes"
+                ],
+                "summary": "Cancelar una orden",
+                "description": "Cancela una orden perteneciente al usuario autenticado.",
+                "operationId": "0b59b76911446d0e1563044ad919d7b9",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 2
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orden cancelada correctamente."
+                    },
+                    "403": {
+                        "description": "La orden no pertenece al usuario."
+                    },
+                    "422": {
+                        "description": "La orden ya está cancelada."
+                    },
+                    "404": {
+                        "description": "Orden no encontrada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{order}/payment": {
+            "post": {
+                "tags": [
+                    "Pagos"
+                ],
+                "summary": "Iniciar pago de una orden",
+                "description": "Crea un PaymentIntent de Stripe y registra el pago asociado a la orden.",
+                "operationId": "890b2ad463d65dc7d1b14f1a73aafab1",
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ID de la orden",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 2
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Pago iniciado correctamente."
+                    },
+                    "403": {
+                        "description": "La orden no pertenece al usuario."
+                    },
+                    "422": {
+                        "description": "La orden no puede ser pagada."
+                    },
+                    "500": {
+                        "description": "Error al procesar el pago con Stripe."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Listar productos",
+                "description": "Mostrar todos los productos.",
+                "operationId": "d97d1c3727cbac49708b85f7d11f7d58",
+                "responses": {
+                    "200": {
+                        "description": "Lista de productos obtenida correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Crear un nuevo producto",
+                "description": "Crear un nuevo producto.",
+                "operationId": "785644b7d7dd38af4b51dafd0fbc1b6d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price",
+                                    "stock"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Horchata Salvadoreña"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bebida tradicional elaborada con semillas y especias."
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 3.5
+                                    },
+                                    "stock": {
+                                        "type": "integer",
+                                        "example": 50
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "example": "El Salvador"
+                                    },
+                                    "active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Producto creado correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{product}": {
+            "get": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Mostrar un producto específico",
+                "description": "Mostrar un producto específico.",
+                "operationId": "db00b523e69d5dbc09c6edad76374bdc",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto obtenido correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Actualizar un producto",
+                "description": "Actualizar un producto.",
+                "operationId": "f47cf55f4f3e0b134b5e7d9a8373725d",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Horchata Salvadoreña"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bebida tradicional elaborada con semillas y especias."
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 4
+                                    },
+                                    "stock": {
+                                        "type": "integer",
+                                        "example": 75
+                                    },
+                                    "country": {
+                                        "type": "string",
+                                        "example": "El Salvador"
+                                    },
+                                    "active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Producto actualizado correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    },
+                    "422": {
+                        "description": "Error de validación"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Productos"
+                ],
+                "summary": "Eliminar un producto",
+                "description": "Eliminar un producto.",
+                "operationId": "ac878db81fdb1333b21fc79e574a5a17",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID del producto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Producto eliminado correctamente"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "404": {
+                        "description": "Producto no encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticación",
+            "description": "Autenticación"
+        },
+        {
+            "name": "Categorías",
+            "description": "Categorías"
+        },
+        {
+            "name": "Health",
+            "description": "Health"
+        },
+        {
+            "name": "Órdenes",
+            "description": "Órdenes"
+        },
+        {
+            "name": "Pagos",
+            "description": "Pagos"
+        },
+        {
+            "name": "Productos",
+            "description": "Productos"
+        }
+    ]
+}
