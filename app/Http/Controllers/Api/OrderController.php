@@ -184,6 +184,7 @@ class OrderController extends Controller
         }
 
         $order->load([
+            'user',
             'items.product',
         ]);
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/health', [HealthController::class, 'index']);
@@ -26,20 +27,50 @@ Route::prefix('auth')->group(function () {
 
 });
 
-    Route::middleware('auth:api')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Productos públicos
+|--------------------------------------------------------------------------
+*/
 
-        Route::apiResource('products', ProductController::class);
+Route::get('/products', [ProductController::class, 'index']);
 
-        Route::apiResource('categories', CategoryController::class);
+Route::get('/products/{product}', [ProductController::class, 'show']);
 
-        Route::get('/orders', [OrderController::class, 'index']);
-        
-        Route::post('/orders', [OrderController::class, 'store']);
 
-        Route::get('/orders/{order}', [OrderController::class, 'show']);
+/*
+|--------------------------------------------------------------------------
+| Rutas protegidas
+|--------------------------------------------------------------------------
+*/
 
-        Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel']);
+Route::middleware('auth:api')->group(function () {
 
-        Route::post('/orders/{order}/payment', [PaymentController::class, 'store']);
+    // Productos
+    Route::post('/products', [ProductController::class, 'store']);
 
-    });
+    Route::put('/products/{product}', [ProductController::class, 'update']);
+
+    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+
+    // Categorías
+    Route::apiResource('categories', CategoryController::class);
+
+    // Órdenes
+    Route::get('/orders', [OrderController::class, 'index']);
+
+    Route::post('/orders', [OrderController::class, 'store']);
+
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
+
+    Route::patch('/orders/{order}/cancel', [OrderController::class, 'cancel']);
+
+    // Pagos
+    Route::post('/orders/{order}/payment', [PaymentController::class, 'store']);
+
+});
+
+Route::post(
+    '/stripe/webhook',
+    [StripeWebhookController::class, 'handle']
+);
